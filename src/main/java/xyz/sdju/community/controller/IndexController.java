@@ -21,17 +21,20 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
     @Resource
     private UserMapper userMapper;
+
     @GetMapping("/")
-   public String index(HttpServletRequest httpServletRequest){
+    public String index(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if(user!=null){
-                    httpServletRequest.getSession().setAttribute("user",user);
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    String token = cookie.getValue();
+                    User user = userMapper.findByToken(token);
+                    if (user != null) {
+                        httpServletRequest.getSession().setAttribute("user", user);
+                    }
+                    break;
                 }
-                break;
             }
         }
 
