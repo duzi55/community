@@ -1,19 +1,15 @@
 package xyz.sdju.community.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import xyz.sdju.community.mapper.QuestionMapper;
-import xyz.sdju.community.mapper.UserMapper;
 import xyz.sdju.community.model.Question;
 import xyz.sdju.community.model.User;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -25,9 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
     @Resource
     private QuestionMapper questionMapper;
-    @Autowired
-    UserMapper userMapper;
-
     @GetMapping("/publish")
     public String publish() {
         return "publish";
@@ -58,23 +51,9 @@ public class PublishController {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
-        User user = null;
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if (cookies != null) {
-
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    user = userMapper.findByToken(cookie.getValue());
-                    if (user != null) {
-                        question.setCreator(user.getId());
-                    } else {
-                        model.addAttribute("error", "用户未登录");
-                        return "publish";
-                    }
-                    break;
-                }
-
-            }
+        User user =(User)httpServletRequest.getSession().getAttribute("user");
+        if(user==null){
+            return "redirect:/";
         }
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());

@@ -2,6 +2,7 @@ package xyz.sdju.community.Service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import xyz.sdju.community.dto.PaginationDTO;
 import xyz.sdju.community.dto.QuestionDTO;
 import xyz.sdju.community.mapper.QuestionMapper;
 import xyz.sdju.community.mapper.UserMapper;
@@ -25,16 +26,55 @@ public class QuestionService {
     @Resource
     private UserMapper userMapper;
 
-    public List<QuestionDTO> list() {
-        List<Question> questions = questionMapper.list();
+    public PaginationDTO list(Integer page, Integer size) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.count();
+        paginationDTO.setPagination(totalCount, page, size);
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+
+        Integer offsize = size * (page - 1);
+        List<Question> questions = questionMapper.list(offsize, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
+
         for (Question question : questions) {
-          User user = userMapper.findById(question.getCreator());
+            User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        return questionDTOS;
+        paginationDTO.setQuestionDTOS(questionDTOS);
+        return paginationDTO;
+    }
+
+    public PaginationDTO list(int userId, Integer page, Integer size) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.countByUserId(userId);
+        paginationDTO.setPagination(totalCount, page, size);
+        if (page <= 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()&& paginationDTO.getTotalPage()!=0) {
+            page = paginationDTO.getTotalPage();
+        }
+
+        Integer offsize = size * (page - 1);
+        List<Question> questions = questionMapper.listByUserId(userId,offsize, size);
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+
+        for (Question question : questions) {
+            User user = userMapper.findById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setUser(user);
+            questionDTOS.add(questionDTO);
+        }
+        paginationDTO.setQuestionDTOS(questionDTOS);
+        return paginationDTO;
     }
 }
