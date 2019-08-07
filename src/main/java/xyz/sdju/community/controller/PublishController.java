@@ -55,6 +55,7 @@ public class PublishController {
         if(user==null){
             return "redirect:/";
         }
+        question.setCreator(user.getId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.create(question);

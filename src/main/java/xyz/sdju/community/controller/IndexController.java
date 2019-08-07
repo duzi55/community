@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import xyz.sdju.community.Service.QuestionService;
+import xyz.sdju.community.service.QuestionService;
 import xyz.sdju.community.dto.PaginationDTO;
 
 import javax.annotation.Resource;

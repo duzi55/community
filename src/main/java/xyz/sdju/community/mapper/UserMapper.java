@@ -1,9 +1,6 @@
 package xyz.sdju.community.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import xyz.sdju.community.model.User;
 
 /**
@@ -21,4 +18,10 @@ public interface UserMapper {
 
     @Select("select * from user where id = #{id}")
     User findById(@Param("id") Integer creator);
+
+    @Select("select * from user where account_id = #{accountId}")
+    User findByAccountId(@Param("accountId") String accountId);
+
+    @Update("update user set name = #{name},token = #{token},gmt_create = #{gmtCreate},gmt_modified = #{gmtModified},avatar_url = #{avatarUrl},bio = #{bio}")
+    void update(User user);
 }

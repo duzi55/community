@@ -1,4 +1,4 @@
-package xyz.sdju.community.Service;
+package xyz.sdju.community.service;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class QuestionService {
         if (page < 1) {
             page = 1;
         }
-        if (page > paginationDTO.getTotalPage()) {
+        if (page > paginationDTO.getTotalPage()&& paginationDTO.getTotalPage()!=0) {
             page = paginationDTO.getTotalPage();
         }
 
