@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>消息中心</title>
+    <title th:text="${sectionName}"></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,7 +25,9 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${questiondto.title}"></h4>
+                    <h4 class="media-heading" >
+                        <a th:href="@{'/question/'+${questiondto.id}}" th:text="${questiondto.title}"></a>
+                    </h4>
                     <p th:text="${questiondto.description}"></p>
                     <span class="font-des"><span th:text="${questiondto.viewCount}"></span>浏览·<span
                             th:text="${questiondto.commentCount}"></span>回复·<span

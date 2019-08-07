@@ -1,5 +1,6 @@
 package xyz.sdju.community.interceptor;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import xyz.sdju.community.mapper.UserMapper;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author: duzi55
  * @date: 2019-07-31 17:11
  */
+@Service
 public class SessionInterceptor implements HandlerInterceptor {
     @Resource
      private UserMapper userMapper;
