@@ -18,26 +18,31 @@
             <h2><span class="glyphicon glyphicon-edit"></span>发起问题</h2>
             <hr>
             <form action="/publish" method="post">
+                <input type="hidden" th:value="${id}" name="id">
                 <div class="form-group">
                     <label for="title">问题标题：</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..."th:value="${title}">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..."
+                           th:value="${title}">
                 </div>
                 <div class="form-group">
                     <label for="description">问题补充：</label>
-                    <textarea type="text" class="form-control" id="description" name="description" th:text="${description}"></textarea>
+                    <textarea type="text" class="form-control" id="description" name="description"
+                              th:text="${description}"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以，隔开" th:value="${tag}">
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以，隔开"
+                           th:value="${tag}">
                 </div>
                 <div class="container-fluid mian">
                     <div class="row">
-                        <div class="col-lg-9 col-md-12 col-xs-12 col-sm-12" >
+                        <div class="col-lg-9 col-md-12 col-xs-12 col-sm-12">
                             <div class="alert alert-danger " th:text="${error}" th:if="${error != null}"></div>
                         </div>
                         <div class="col-lg-3 col-md-12 col-xs-12 col-sm-12">
                             <button type="submit" class="btn btn-success btn-publish">发布
-                        </button></div>
+                            </button>
+                        </div>
 
                     </div>
                 </div>

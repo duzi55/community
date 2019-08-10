@@ -4,6 +4,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import xyz.sdju.community.dto.PaginationDTO;
 import xyz.sdju.community.dto.QuestionDTO;
+import xyz.sdju.community.exception.CustimizeErrorCode;
+import xyz.sdju.community.exception.CustimizeErrorCodeInterface;
+import xyz.sdju.community.exception.CustomizeException;
 import xyz.sdju.community.mapper.QuestionMapper;
 import xyz.sdju.community.mapper.UserMapper;
 import xyz.sdju.community.model.Question;
@@ -33,7 +36,7 @@ public class QuestionService {
         if (page < 1) {
             page = 1;
         }
-        if (page > paginationDTO.getTotalPage()&& paginationDTO.getTotalPage()!=0) {
+        if (page > paginationDTO.getTotalPage() && paginationDTO.getTotalPage() != 0) {
             page = paginationDTO.getTotalPage();
         }
 
@@ -59,12 +62,12 @@ public class QuestionService {
         if (page <= 1) {
             page = 1;
         }
-        if (page > paginationDTO.getTotalPage()&& paginationDTO.getTotalPage()!=0) {
+        if (page > paginationDTO.getTotalPage() && paginationDTO.getTotalPage() != 0) {
             page = paginationDTO.getTotalPage();
         }
 
         Integer offsize = size * (page - 1);
-        List<Question> questions = questionMapper.listByUserId(userId,offsize, size);
+        List<Question> questions = questionMapper.listByUserId(userId, offsize, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
 
         for (Question question : questions) {
@@ -80,10 +83,28 @@ public class QuestionService {
 
     public QuestionDTO findById(Integer id) {
         Question question = questionMapper.findById(id);
+        if (question == null) {
+            throw new CustomizeException(CustimizeErrorCode.QUESTION_NOT_FIND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.create(question);
+        } else {
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
+    }
+
+    public void inView(Integer id) {
+        questionMapper.inView(id);
     }
 }
