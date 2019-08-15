@@ -7,4 +7,5 @@ package xyz.sdju.community.exception;
  */
 public interface CustimizeErrorCodeInterface {
     String getMessage();
+    Integer getCode();
 }

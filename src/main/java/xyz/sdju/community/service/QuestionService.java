@@ -103,7 +103,6 @@ public class QuestionService {
             questionMapper.update(question);
         }
     }
-
     public void inView(Integer id) {
         questionMapper.inView(id);
     }
